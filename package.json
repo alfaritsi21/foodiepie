@@ -1,0 +1,29 @@
+{
+  "name": "foodiepie-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alfaritsi21/foodiepie-backend.git"
+  },
+  "author": "Arqi Alfaritsi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alfaritsi21/foodiepie-backend/issues"
+  },
+  "homepage": "https://github.com/alfaritsi21/foodiepie-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.4",
+    "qs": "^6.9.4"
+  }
+}
