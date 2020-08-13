@@ -54,17 +54,17 @@ module.exports = {
   },
   deleteProduct: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query("DELETE FROM product WHERE product_id = ?", id, (error, result) => {
+      connection.query("UPDATE product SET product_status = 0 WHERE product_id = ?", id, (error, result) => {
         if (!error) {
           const newResult = {
-            id: id
+            category_id: id
           }
-          resolve(newResult)
+          resolve(newResult);
         } else {
           reject(new Error(error));
           
         }
-      })
+      });
     });
   }
 }

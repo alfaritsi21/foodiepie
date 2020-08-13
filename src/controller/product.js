@@ -29,10 +29,11 @@ module.exports = {
   },
   postProduct: async (request, response) => {
     try {
-    const {product_name, product_price, product_status} = request.body;
+    const {product_name, product_price, category_id, product_status} = request.body;
     const setData = {
       product_name,
       product_price,
+      category_id,
       product_created_at: new Date(),
       product_status
     }
@@ -49,15 +50,19 @@ module.exports = {
   patchProduct: async (request, response) => {
     try {
       const { id } = request.params;
-      const { product_name, product_price, product_status } = request.body;
-      const setData = {
-        product_name,
-        product_price,
-        product_updated_at: new Date(),
-        product_status
-      }
+      const { product_name, product_price, category_id, product_status } = request.body;
+      
       const checkId = await getProductById(id);
+      console.log(checkId);
+      
       if (checkId.length > 0) {
+        const setData = {
+          product_name : product_name ? product_name : checkId[0].product_name,
+          product_price : product_price ? product_price : checkId[0].product_price, 
+          category_id : category_id ? category_id : checkId[0].category_id,
+          product_updated_at: new Date(),
+          product_status : product_status ? product_status : checkId[0].product_status
+        }
         const result = await patchProduct(setData, id);
         return helper.response(response, 201, "Product Updated", result)
       
