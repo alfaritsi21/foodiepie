@@ -1,4 +1,7 @@
-const { getAllHistory, getHistoryById, postHistory, patchHistory, deleteHistory } = require("../model/history");
+const { getAllHistory, getHistoryById, postHistory, patchHistory, deleteHistory, sumOrder, updateHistorySubtotal } = require("../model/history");
+const { getProductById } = require("../model/product");
+const { postOrder } = require("../model/order")
+
 const helper = require("../helper");
 
 module.exports = {
@@ -29,63 +32,37 @@ module.exports = {
   },
   postHistory: async (request, response) => {
     try {
-    const { invoice, history_subtotal, history_status } = request.body;
+    const { invoice, history_subtotal, history_status, orders } = request.body;
+
     const setData = {
-      invoice,
-      history_subtotal,
+      invoice : "ARQ-" + Math.floor(Math.random() * 5000)*250,
+      history_subtotal: 0,
       history_created_at: new Date(),
-      history_status
+      history_status: 1
     }
-      const result = await postHistory(setData);
-      console.log(setData);
-      return helper.response(response, 201, "History Created", result)
-    } catch (error) {
-      return helper.response(response, 400, "Bad Request", error)
-      
-    }
-    
-  },
+      const history = await postHistory(setData);
 
-  patchHistory: async (request, response) => {
-    try {
-      const { id } = request.params;
-      const { invoice, history_subtotal, history_status } = request.body;
-      
-      const checkId = await getHistoryById(id);
-      console.log(checkId);
-      
-      if (checkId.length > 0) {
+      for(let i =0; i< orders.length; i++)  {
+        const product = await getProductById(orders[i].product_id);
+        let product_price = product[0].product_price;
+        let order_total = product_price * orders[i].quantity;
         const setData = {
-          invoice : invoice ? invoice : checkId[0].invoice,
-          history_subtotal : history_subtotal ? history_subtotal : checkId[0].history_subtotal, 
-          history_updated_at: new Date(),
-          history_status : history_status ? history_status : checkId[0].history_status
-        }
-        const result = await patchHistory(setData, id);
-        return helper.response(response, 201, "History Updated", result)
-      
-      } else {
-        return helper.response(response, 404, `History By Id : ${id} Not Found`)
-        
-      }
-      
-    } catch (error) {
-      return helper.response(response, 400, "Bad Request", error)
-      
-    }
-    
-  },
-  deleteHistory: async (request, response) => {
-    try {
-      const { id } = request.params;
-      const result = await deleteHistory(id);
-      console.log(result)
-      return helper.response(response, 201, "History Deleted", result)
+            product_id: orders[i].product_id,
+            quantity: orders[i].quantity,
+            order_status: 1,
+            history_id: history.history_id,
+            order_total: order_total,
+            ppn: order_total / 10
+          }
+          const result = await postOrder(setData);
+      }; 
+    const updateSubtotal = await updateHistorySubtotal(history.history_id)
 
-      
+    const updatedHistory = await getHistoryById(history.history_id)
+
+      return helper.response(response, 201, "History Created", updatedHistory)
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error)
-      
     }
-  },
+  }
 };

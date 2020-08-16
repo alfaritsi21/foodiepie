@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { getAllHistory, getHistoryById, postHistory, patchHistory, deleteHistory } = require('../controller/history');
+const { getAllHistory, getHistoryById, postHistory } = require('../controller/history');
 
 
 
@@ -12,11 +12,11 @@ router.get("/:id", getHistoryById);
 // POST
 router.post('/', postHistory);
 
-// PATCH/ PUT
-router.patch('/:id', patchHistory);
+// // PATCH/ PUT
+// router.patch('/:id', patchHistory);
 
-// DELETE
-router.delete('/:id', deleteHistory);
+// // DELETE
+// router.delete('/:id', deleteHistory);
 
 
 module.exports = router;

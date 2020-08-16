@@ -1,4 +1,4 @@
-const { getProduct, getProductCount, getProductById, postProduct, patchProduct, deleteProduct } = require("../model/product");
+const { getProduct, getProductCount, getProductById, postProduct, patchProduct, deleteProduct, searchProductName, orderProduct } = require("../model/product");
 const qs = require('querystring')
 const helper = require("../helper");
 
@@ -29,7 +29,7 @@ const getNextLink = (page, totalPage, currentQuery) => {
 
 module.exports = {
   getAllProduct: async (request, response) => {
-    let { page, limit } = request.query
+    let { page, limit, order, order_type } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
       let totalData = await getProductCount()
@@ -38,6 +38,7 @@ module.exports = {
       let prevLink = getPrevLink(page, request.query)
       let nextLink = getNextLink(page, totalPage, request.query)
 
+      
       const pageInfo = {
         page,
         totalPage,
@@ -49,7 +50,7 @@ module.exports = {
       }
     try {
       
-      const result = await getProduct(limit, offset);
+      const result = await getProduct(limit, offset, order, order_type);
       return helper.response(response, 200, "Success GET Product", result, pageInfo);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -90,7 +91,42 @@ module.exports = {
     }
     
   },
+  searchProductName: async (request, response) => {
+    try {
+      const  { product_name } = request.body;
+      const result = await searchProductName(product_name);
+      console.log(result)
 
+      if(result.length > 0) {
+        return helper.response(response, 200, "Success Get Product by ID", result)
+
+      } else {
+        return helper.response(response, 404, `Product By Id : ${product_name} Not Found`)
+        
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error)
+
+    }
+  },
+  orderProduct: async (request, response) => {
+    try {
+      const  { product_name } = request.body;
+      const result = await searchProductName(product_name);
+      console.log(result)
+
+      if(result.length > 0) {
+        return helper.response(response, 200, "Success Get Product by ID", result)
+
+      } else {
+        return helper.response(response, 404, `Product By Id : ${product_name} Not Found`)
+        
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error)
+
+    }
+  },
   patchProduct: async (request, response) => {
     try {
       const { id } = request.params;
