@@ -162,7 +162,13 @@ module.exports = {
       const { id } = request.params;
       const result = await deleteProduct(id);
       console.log(result)
-      return helper.response(response, 201, "Product Deleted", result)
+      if(result) {
+        return helper.response(response, 201, "Product Deleted", id)
+
+      } else {
+        return helper.response(response, 404, `Category : ${id} Not Found`)
+        
+      }
 
       
     } catch (error) {

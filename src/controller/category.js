@@ -75,8 +75,13 @@ module.exports = {
       const { id } = request.params;
       const result = await deleteCategory(id);
       console.log(result)
-      return helper.response(response, 201, "Category Deleted", result)
+      if(result) {
+        return helper.response(response, 201, "Category Deleted", id)
 
+      } else {
+        return helper.response(response, 404, `Category : ${id} Not Found`)
+        
+      }
       
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error)

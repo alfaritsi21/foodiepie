@@ -78,10 +78,8 @@ module.exports = {
     return new Promise((resolve, reject) => {
       connection.query("UPDATE product SET product_status = 0 WHERE product_id = ?", id, (error, result) => {
         if (!error) {
-          const newResult = {
-            category_id: id
-          }
-          resolve(newResult);
+          
+          resolve(result.changedRows);
         } else {
           reject(new Error(error));
           
