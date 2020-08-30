@@ -9,7 +9,6 @@ router.get("/:id", getProductById);
 // POST
 router.post('/', postProduct);
 router.post('/search', searchProductName);
-router.post('/order', orderProduct)
 
 
 // PATCH/ PUT

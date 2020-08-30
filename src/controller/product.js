@@ -83,7 +83,7 @@ module.exports = {
       product_status
     }
       const result = await postProduct(setData);
-      console.log(setData)
+      // console.log(setData)
       return helper.response(response, 201, "Product Created", result)
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error)
@@ -95,7 +95,7 @@ module.exports = {
     try {
       const  { product_name } = request.body;
       const result = await searchProductName(product_name);
-      console.log(result)
+      // console.log(result)
 
       if(result.length > 0) {
         return helper.response(response, 200, "Success Get Product by ID", result)
@@ -113,7 +113,7 @@ module.exports = {
     try {
       const  { product_name } = request.body;
       const result = await searchProductName(product_name);
-      console.log(result)
+      // console.log(result)
 
       if(result.length > 0) {
         return helper.response(response, 200, "Success Get Product by ID", result)
@@ -133,7 +133,7 @@ module.exports = {
       const { product_name, product_price, category_id, product_status } = request.body;
       
       const checkId = await getProductById(id);
-      console.log(checkId);
+      // console.log(checkId);
       
       if (checkId.length > 0) {
         const setData = {
@@ -161,7 +161,7 @@ module.exports = {
     try {
       const { id } = request.params;
       const result = await deleteProduct(id);
-      console.log(result)
+      // console.log(result)
       if(result) {
         return helper.response(response, 201, "Product Deleted", id)
 
