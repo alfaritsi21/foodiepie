@@ -2,7 +2,9 @@ const router = require("express").Router();
 const { authorization } = require("../middleware/auth");
 const {
   getProductByIdRedis,
+  clearDataProductIdRedis,
   clearDataProductRedis,
+  getProductByPagination,
 } = require("../middleware/redis");
 const multer = require("multer");
 const {
@@ -31,17 +33,22 @@ let upload = multer({ storage: storage });
 
 // GET
 
-router.get("/", authorization, getAllProduct);
+router.get("/", authorization, getProductByPagination, getAllProduct);
 router.get("/:id", authorization, getProductByIdRedis, getProductById);
 
 // POST
-router.post("/", upload.single("product_image"), postProduct);
+router.post(
+  "/",
+  clearDataProductRedis,
+  upload.single("product_image"),
+  postProduct
+);
 router.post("/search", searchProductName);
 
 // PATCH/ PUT
 router.patch(
   "/:id",
-  clearDataProductRedis,
+  clearDataProductIdRedis,
   upload.single("product_image"),
   patchProduct
 );

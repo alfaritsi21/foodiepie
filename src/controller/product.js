@@ -60,7 +60,7 @@ module.exports = {
       const result = await getProduct(limit, offset, order, order_type);
       // prosesset data result ke dalam redis
       client.setex(
-        `getproduct:${JSON.stringify(request.query)}`,
+        `getproductbypagination-${page}-${limit}-${order}-${order_type}`,
         3600,
         JSON.stringify(result)
       );
@@ -79,8 +79,9 @@ module.exports = {
     try {
       const { id } = request.params;
       const result = await getProductById(id);
-      client.set(`getproductbyid:${id}`, JSON.stringify(result));
       if (result.length > 0) {
+        client.set(`getproductbyid:${id}`, JSON.stringify(result));
+
         return helper.response(
           response,
           200,
@@ -199,6 +200,7 @@ module.exports = {
             : checkId[0].product_status,
         };
         const result = await patchProduct(setData, id);
+        client.set(`getproductbyid:${id}`, JSON.stringify(result));
         return helper.response(response, 201, "Product Updated", result);
       } else {
         return helper.response(
