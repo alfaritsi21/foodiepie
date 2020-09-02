@@ -177,6 +177,7 @@ module.exports = {
         product_name,
         product_price,
         category_id,
+        product_image,
         product_status,
       } = request.body;
 
@@ -190,6 +191,8 @@ module.exports = {
             ? product_price
             : checkId[0].product_price,
           category_id: category_id ? category_id : checkId[0].category_id,
+          product_image:
+            request.file === undefined ? "" : request.file.filename,
           product_updated_at: new Date(),
           product_status: product_status
             ? product_status

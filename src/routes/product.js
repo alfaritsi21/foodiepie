@@ -39,7 +39,12 @@ router.post("/", upload.single("product_image"), postProduct);
 router.post("/search", searchProductName);
 
 // PATCH/ PUT
-router.patch("/:id", clearDataProductRedis, patchProduct);
+router.patch(
+  "/:id",
+  clearDataProductRedis,
+  upload.single("product_image"),
+  patchProduct
+);
 
 // DELETE
 router.delete("/:id", clearDataProductRedis, deleteProduct);

@@ -53,7 +53,7 @@ module.exports = {
             user_role,
             user_status,
           };
-          const token = jwt.sign(payload, "RAHASIA", { expiresIn: "1h" });
+          const token = jwt.sign(payload, "RAHASIA", { expiresIn: "24h" });
           payload = { ...payload, token };
           return helper.response(response, 200, "Success Login !", payload);
         } else {
