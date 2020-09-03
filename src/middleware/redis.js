@@ -38,7 +38,65 @@ module.exports = {
     });
     next();
   },
-  clearDataProductRedis: (request, response, next) => {
+
+  // CATEGORY
+  getCategoryRedis: (request, response, next) => {
+    client.get("getcategory", (error, result) => {
+      if (!error && result != null) {
+        console.log("data ada di dalam redis !");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data tidak ada di dalam redis !");
+        next();
+      }
+    });
+  },
+  getCategoryByIdRedis: (request, response, next) => {
+    const { id } = request.params;
+    client.get(`getcategorybyid:${id}`, (error, result) => {
+      if (!error && result != null) {
+        console.log("data ada di dalam redis !");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data tidak ada di dalam redis !");
+        next();
+      }
+    });
+  },
+  clearDataCategoryIdRedis: (request, response, next) => {
+    const { id } = request.params;
+    client.del(`getcategorybyid:${id}`, (error, result) => {
+      console.log(result);
+    });
+    next();
+  },
+
+  // ORDER
+  getOrderRedis: (request, response, next) => {
+    client.get("getorder", (error, result) => {
+      if (!error && result != null) {
+        console.log("data ada di dalam redis !");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data tidak ada di dalam redis !");
+        next();
+      }
+    });
+  },
+  getOrderByIdRedis: (request, response, next) => {
+    const { id } = request.params;
+    client.get(`getorderbyid:${id}`, (error, result) => {
+      if (!error && result != null) {
+        console.log("data ada di dalam redis !");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data tidak ada di dalam redis !");
+        next();
+      }
+    });
+  },
+
+  clearDataRedis: (request, response, next) => {
     client.flushall((error, result) => {
       console.log(result);
     });

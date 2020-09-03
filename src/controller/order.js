@@ -1,12 +1,19 @@
-const { getAllOrder, getOrderById, postOrder, getProductPrice } = require("../model/order");
+const {
+  getAllOrder,
+  getOrderById,
+  postOrder,
+  getProductPrice,
+} = require("../model/order");
 const helper = require("../helper");
 const { getProductById } = require("../model/product");
-
+const redis = require("redis");
+const client = redis.createClient();
 
 module.exports = {
   getAllOrder: async (request, response) => {
     try {
       const result = await getAllOrder();
+      client.set("getorder", JSON.stringify(result));
       return helper.response(response, 200, "Success GET Order", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -15,25 +22,29 @@ module.exports = {
   getOrderById: async (request, response) => {
     try {
       // const id = request.params.id
-      const {id} = request.params;
+      const { id } = request.params;
       const result = await getOrderById(id);
-      if(result.length > 0) {
-        return helper.response(response, 200, "Success Get Order by ID", result)
+      if (result.length > 0) {
+        client.set(`getorderbyid:${id}`, JSON.stringify(result));
 
+        return helper.response(
+          response,
+          200,
+          "Success Get Order by ID",
+          result
+        );
       } else {
-        return helper.response(response, 404, `Order By Id : ${id} Not Found`)
-        
+        return helper.response(response, 404, `Order By Id : ${id} Not Found`);
       }
     } catch (error) {
-      return helper.response(response, 400, "Bad Request", error)
-
+      return helper.response(response, 400, "Bad Request", error);
     }
   },
   // postOrder: async (request, response) => {
   //   try {
-    
+
   //   const { product_id, quantity, order_status } = request.body;
-    
+
   //   // const product = await getProductById(product_id);
   //   // let product_price = product[0].product_price;
   //   // helper.response(response, 201, "Order Created", )
@@ -53,6 +64,6 @@ module.exports = {
   //   } catch (error) {
   //     return helper.response(response, 400, "Bad Request", error)
   //   }
-    
+
   // }
 };

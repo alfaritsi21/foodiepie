@@ -3,7 +3,7 @@ const { authorization } = require("../middleware/auth");
 const {
   getProductByIdRedis,
   clearDataProductIdRedis,
-  clearDataProductRedis,
+  clearDataRedis,
   getProductByPagination,
 } = require("../middleware/redis");
 const multer = require("multer");
@@ -37,12 +37,7 @@ router.get("/", authorization, getProductByPagination, getAllProduct);
 router.get("/:id", authorization, getProductByIdRedis, getProductById);
 
 // POST
-router.post(
-  "/",
-  clearDataProductRedis,
-  upload.single("product_image"),
-  postProduct
-);
+router.post("/", clearDataRedis, upload.single("product_image"), postProduct);
 router.post("/search", searchProductName);
 
 // PATCH/ PUT
@@ -54,6 +49,6 @@ router.patch(
 );
 
 // DELETE
-router.delete("/:id", clearDataProductRedis, deleteProduct);
+router.delete("/:id", clearDataRedis, deleteProduct);
 
 module.exports = router;

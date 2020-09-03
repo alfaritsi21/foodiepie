@@ -1,22 +1,30 @@
 const router = require("express").Router();
-const { getAllCategory, getCategoryById, postCategory, patchCategory, deleteCategory } = require('../controller/category');
-
-
+const {
+  getAllCategory,
+  getCategoryById,
+  postCategory,
+  patchCategory,
+  deleteCategory,
+} = require("../controller/category");
+const {
+  getCategoryRedis,
+  getCategoryByIdRedis,
+  clearDataCategoryIdRedis,
+  clearDataRedis,
+} = require("../middleware/redis");
 
 // category
 // GET
-router.get("/", getAllCategory);
-router.get("/:id", getCategoryById);
-
+router.get("/", getCategoryRedis, getAllCategory);
+router.get("/:id", getCategoryByIdRedis, getCategoryById);
 
 // POST
-router.post('/', postCategory);
+router.post("/", clearDataRedis, postCategory);
 
 // PATCH/ PUT
-router.patch('/:id', patchCategory);
+router.patch("/:id", clearDataCategoryIdRedis, patchCategory);
 
 // DELETE
-router.delete('/:id', deleteCategory);
-
+router.delete("/:id", clearDataRedis, deleteCategory);
 
 module.exports = router;
