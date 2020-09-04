@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { authorization } = require("../middleware/auth");
+const { authorization, checkRole } = require("../middleware/auth");
 const {
   getProductByIdRedis,
   clearDataProductIdRedis,
@@ -27,7 +27,14 @@ router.post("/", clearDataRedis, upload, postProduct);
 router.post("/search", searchProductName);
 
 // PATCH/ PUT
-router.patch("/:id", clearDataProductIdRedis, upload, patchProduct);
+router.patch(
+  "/:id",
+  authorization,
+  checkRole,
+  clearDataProductIdRedis,
+  upload,
+  patchProduct
+);
 
 // DELETE
 router.delete("/:id", clearDataRedis, deleteProduct);

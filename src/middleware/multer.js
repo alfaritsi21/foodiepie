@@ -1,5 +1,6 @@
 const multer = require("multer");
 const helper = require("../helper/index");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: (request, file, callback) => {

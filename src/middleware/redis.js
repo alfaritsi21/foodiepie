@@ -127,7 +127,7 @@ module.exports = {
     next();
   },
 
-  clearSpecificProductRedis: (request, response, next) => {
+  clearSpecificPaginationRedis: (request, response, next) => {
     client.keys("getproduct*", (err, keys) => {
       if (keys.length > 0) {
         keys.forEach((value) => {

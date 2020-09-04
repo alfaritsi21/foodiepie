@@ -24,4 +24,18 @@ module.exports = {
       return helper.response(response, 400, "Please login first !");
     }
   },
+  checkRole: (request, response, next) => {
+    let token = request.headers.authorization;
+    if (token) {
+      // validasi token jwt
+      token = token.split(" ")[1];
+      const payload = jwt.verify(token, "RAHASIA");
+      if (payload.user_role !== 1) {
+        return helper.response(response, 400, "Unauthorized");
+      }
+      next();
+    } else {
+      return helper.response(response, 400, "Please login first !");
+    }
+  },
 };

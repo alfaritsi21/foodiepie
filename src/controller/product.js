@@ -12,6 +12,7 @@ const qs = require("querystring");
 const helper = require("../helper");
 const redis = require("redis");
 const client = redis.createClient();
+const fs = require("fs");
 
 const getPrevLink = (page, currentQuery) => {
   if (page > 1) {
@@ -200,7 +201,16 @@ module.exports = {
             : checkId[0].product_status,
         };
         const result = await patchProduct(setData, id);
+        const fsUnlink = fs.unlink(
+          `./uploads/${checkId[0].product_image}`,
+          (err) => {
+            if (!err) {
+              console.log("success");
+            }
+          }
+        );
         client.set(`getproductbyid:${id}`, JSON.stringify(result));
+
         return helper.response(response, 201, "Product Updated", result);
       } else {
         return helper.response(

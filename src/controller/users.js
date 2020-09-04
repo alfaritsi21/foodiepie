@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const helper = require("../helper");
 const jwt = require("jsonwebtoken");
-const { postUser, checkUser } = require("../model/users");
+const { postUser, checkUser, checkUsername } = require("../model/users");
 
 const checkPassword = (user_password) => {
   let decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
@@ -24,20 +24,30 @@ const validateEmail = (user_email) => {
 module.exports = {
   registerUser: async (request, response) => {
     const { user_email, user_password, user_name } = request.body;
+    const checkEmail = await checkUser(user_email);
+    const checkName = await checkUsername(user_name);
+
     if (!validateEmail(user_email)) {
       return helper.response(response, 400, "Invalid Email");
-    }
-
-    if (!checkPassword(user_password)) {
+    } else if (!checkEmail.length < 1) {
+      return helper.response(response, 400, "Email already registered");
+    } else if (!checkPassword(user_password)) {
       return helper.response(
         response,
         400,
         "Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
       );
+    } else if (!checkName.length < 1) {
+      return helper.response(
+        response,
+        400,
+        "Username has been taken, try another username"
+      );
     }
 
     const salt = bcrypt.genSaltSync(10);
     const encryptPassword = bcrypt.hashSync(user_password, salt);
+
     // console.log(`user Password = ${user_password}`);
     // console.log(`user Password Bcrypt = ${encryptPassword}`);
     // kondisi jika email sama tidak bisa
@@ -46,7 +56,7 @@ module.exports = {
       user_password: encryptPassword,
       user_name,
       user_role: 2,
-      user_status: 0,
+      user_status: 1,
       user_created_at: new Date(),
     };
     try {
