@@ -6,7 +6,6 @@ const {
   clearDataRedis,
   getProductByPagination,
 } = require("../middleware/redis");
-const multer = require("multer");
 const {
   getAllProduct,
   getProductById,
@@ -16,20 +15,7 @@ const {
   searchProductName,
   orderProduct,
 } = require("../controller/product");
-
-const storage = multer.diskStorage({
-  destination: (request, file, callback) => {
-    callback(null, "./uploads/");
-  },
-  filename: (request, file, callback) => {
-    // console.log(file);
-    callback(
-      null,
-      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
-    );
-  },
-});
-let upload = multer({ storage: storage });
+const upload = require("../middleware/multer");
 
 // GET
 
@@ -37,16 +23,11 @@ router.get("/", authorization, getProductByPagination, getAllProduct);
 router.get("/:id", authorization, getProductByIdRedis, getProductById);
 
 // POST
-router.post("/", clearDataRedis, upload.single("product_image"), postProduct);
+router.post("/", clearDataRedis, upload, postProduct);
 router.post("/search", searchProductName);
 
 // PATCH/ PUT
-router.patch(
-  "/:id",
-  clearDataProductIdRedis,
-  upload.single("product_image"),
-  patchProduct
-);
+router.patch("/:id", clearDataProductIdRedis, upload, patchProduct);
 
 // DELETE
 router.delete("/:id", clearDataRedis, deleteProduct);

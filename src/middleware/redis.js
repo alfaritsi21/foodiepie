@@ -95,11 +95,45 @@ module.exports = {
       }
     });
   },
+  // HISTORY
+  getHistoryRedis: (request, response, next) => {
+    client.get("gethistory", (error, result) => {
+      if (!error && result != null) {
+        console.log("data ada di dalam redis !");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data tidak ada di dalam redis !");
+        next();
+      }
+    });
+  },
+  getHistoryByIdRedis: (request, response, next) => {
+    const { id } = request.params;
+    client.get(`gethistorybyid:${id}`, (error, result) => {
+      if (!error && result != null) {
+        console.log("data ada di dalam redis !");
+        return helper.response(response, 200, JSON.parse(result));
+      } else {
+        console.log("data tidak ada di dalam redis !");
+        next();
+      }
+    });
+  },
 
   clearDataRedis: (request, response, next) => {
     client.flushall((error, result) => {
       console.log(result);
     });
     next();
+  },
+
+  clearSpecificProductRedis: (request, response, next) => {
+    client.keys("getproduct*", (err, keys) => {
+      if (keys.length > 0) {
+        keys.forEach((value) => {
+          client.del(value);
+        });
+      }
+    });
   },
 };

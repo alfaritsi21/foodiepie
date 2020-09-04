@@ -3,9 +3,39 @@ const helper = require("../helper");
 const jwt = require("jsonwebtoken");
 const { postUser, checkUser } = require("../model/users");
 
+const checkPassword = (user_password) => {
+  let decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+  if (user_password.match(decimal)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const validateEmail = (user_email) => {
+  let valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if (user_email.match(valid)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 module.exports = {
   registerUser: async (request, response) => {
     const { user_email, user_password, user_name } = request.body;
+    if (!validateEmail(user_email)) {
+      return helper.response(response, 400, "Invalid Email");
+    }
+
+    if (!checkPassword(user_password)) {
+      return helper.response(
+        response,
+        400,
+        "Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
+      );
+    }
+
     const salt = bcrypt.genSaltSync(10);
     const encryptPassword = bcrypt.hashSync(user_password, salt);
     // console.log(`user Password = ${user_password}`);
