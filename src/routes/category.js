@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const { authorization, checkRole } = require("../middleware/auth");
+
 const {
   getAllCategory,
   getCategoryById,
@@ -11,20 +13,39 @@ const {
   getCategoryByIdRedis,
   clearDataCategoryIdRedis,
   clearDataRedis,
+  clearSpecificCategoryRedis,
 } = require("../middleware/redis");
 
 // category
 // GET
-router.get("/", getCategoryRedis, getAllCategory);
-router.get("/:id", getCategoryByIdRedis, getCategoryById);
+router.get("/", authorization, getCategoryRedis, getAllCategory);
+router.get("/:id", authorization, getCategoryByIdRedis, getCategoryById);
 
 // POST
-router.post("/", clearDataRedis, postCategory);
+router.post(
+  "/",
+  authorization,
+  checkRole,
+  clearSpecificCategoryRedis,
+  postCategory
+);
 
 // PATCH/ PUT
-router.patch("/:id", clearDataCategoryIdRedis, patchCategory);
+router.patch(
+  "/:id",
+  authorization,
+  checkRole,
+  clearDataCategoryIdRedis,
+  patchCategory
+);
 
 // DELETE
-router.delete("/:id", clearDataRedis, deleteCategory);
+router.delete(
+  "/:id",
+  authorization,
+  checkRole,
+  clearSpecificCategoryRedis,
+  deleteCategory
+);
 
 module.exports = router;

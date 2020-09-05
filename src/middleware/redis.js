@@ -17,10 +17,12 @@ module.exports = {
   },
   // tambahkan get product yang ada pagination
   getProductByPagination: (request, response, next) => {
-    const { page, limit, order, order_type } = request.query;
+    // const { page, limit, order, order_type } = request.query;
     client.get(
-      `getproductbypagination-${page}-${limit}-${order}-${order_type}`,
+      // `getproductbypagination-${page}-${limit}-${order}-${order_type}`,
+      `getproductbypagination:${JSON.stringify(request.query)}`,
       (error, result) => {
+        const newResult = JSON.parse(result);
         if (!error && result != null) {
           console.log("data ada di dalam redis !");
           return helper.response(response, 200, JSON.parse(result));
@@ -39,9 +41,20 @@ module.exports = {
     next();
   },
 
+  clearSpecificPaginationRedis: (request, response, next) => {
+    client.keys("getproductbypagination*", (err, keys) => {
+      if (keys.length > 0) {
+        keys.forEach((value) => {
+          client.del(value);
+        });
+      }
+      next();
+    });
+  },
+
   // CATEGORY
   getCategoryRedis: (request, response, next) => {
-    client.get("getcategory", (error, result) => {
+    client.get("getcategories", (error, result) => {
       if (!error && result != null) {
         console.log("data ada di dalam redis !");
         return helper.response(response, 200, JSON.parse(result));
@@ -71,6 +84,17 @@ module.exports = {
     next();
   },
 
+  clearSpecificCategoryRedis: (request, response, next) => {
+    client.keys("getcategories*", (err, keys) => {
+      if (keys.length > 0) {
+        keys.forEach((value) => {
+          client.del(value);
+        });
+      }
+      next();
+    });
+  },
+
   // ORDER
   getOrderRedis: (request, response, next) => {
     client.get("getorder", (error, result) => {
@@ -95,6 +119,7 @@ module.exports = {
       }
     });
   },
+
   // HISTORY
   getHistoryRedis: (request, response, next) => {
     client.get("gethistory", (error, result) => {
@@ -127,13 +152,13 @@ module.exports = {
     next();
   },
 
-  clearSpecificPaginationRedis: (request, response, next) => {
-    client.keys("getproduct*", (err, keys) => {
-      if (keys.length > 0) {
-        keys.forEach((value) => {
-          client.del(value);
-        });
-      }
-    });
-  },
+  // clearSpecificPaginationRedis: (request, response, next) => {
+  //   client.keys("getproduct*", (err, keys) => {
+  //     if (keys.length > 0) {
+  //       keys.forEach((value) => {
+  //         client.del(value);
+  //       });
+  //     }
+  //   });
+  // },
 };

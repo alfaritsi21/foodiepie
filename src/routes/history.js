@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const { authorization, checkRole } = require("../middleware/auth");
+
 const {
   getAllHistory,
   getHistoryById,
@@ -12,15 +14,15 @@ const { getHistoryRedis, getHistoryByIdRedis } = require("../middleware/redis");
 
 // history
 // GET
-router.get("/", getHistoryRedis, getAllHistory);
-router.get("/:id", getHistoryByIdRedis, getHistoryById);
-router.post("/count/order", getCountOrder);
+router.get("/", authorization, getHistoryRedis, getAllHistory);
+router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById);
+router.post("/count/order", authorization, getCountOrder);
 
 // POST
 router.post("/", postHistory);
-router.post("/income/today", getTodayIncome);
-router.post("/income/month", getDailyIncomeThisMonth);
-router.post("/income/year", getYearIncome);
+router.post("/income/today", authorization, getTodayIncome);
+router.post("/income/month", authorization, getDailyIncomeThisMonth);
+router.post("/income/year", authorization, getYearIncome);
 
 // // PATCH/ PUT
 // router.patch('/:id', patchHistory);

@@ -13,7 +13,7 @@ module.exports = {
   getAllCategory: async (request, response) => {
     try {
       const result = await getAllCategory();
-      client.set("getcategory", JSON.stringify(result));
+      client.set("getcategories", JSON.stringify(result));
       return helper.response(response, 200, "Success GET Category", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);

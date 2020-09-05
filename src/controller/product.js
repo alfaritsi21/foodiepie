@@ -59,11 +59,16 @@ module.exports = {
     };
     try {
       const result = await getProduct(limit, offset, order, order_type);
+      const newData = {
+        result,
+        pageInfo,
+      };
       // prosesset data result ke dalam redis
-      client.setex(
-        `getproductbypagination-${page}-${limit}-${order}-${order_type}`,
-        3600,
-        JSON.stringify(result)
+      client.set(
+        // `getproductbypagination-${page}-${limit}-${order}-${order_type}`,
+        `getproductbypagination:${JSON.stringify(request.query)}`,
+        // JSON.stringify(result),
+        JSON.stringify(newData)
       );
       return helper.response(
         response,

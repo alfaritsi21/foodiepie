@@ -5,6 +5,7 @@ const {
   clearDataProductIdRedis,
   clearDataRedis,
   getProductByPagination,
+  clearSpecificPaginationRedis,
 } = require("../middleware/redis");
 const {
   getAllProduct,
@@ -23,8 +24,14 @@ router.get("/", authorization, getProductByPagination, getAllProduct);
 router.get("/:id", authorization, getProductByIdRedis, getProductById);
 
 // POST
-router.post("/", clearDataRedis, upload, postProduct);
-router.post("/search", searchProductName);
+router.post(
+  "/",
+  authorization,
+  clearSpecificPaginationRedis,
+  upload,
+  postProduct
+);
+router.post("/search", authorization, searchProductName);
 
 // PATCH/ PUT
 router.patch(
@@ -37,6 +44,12 @@ router.patch(
 );
 
 // DELETE
-router.delete("/:id", clearDataRedis, deleteProduct);
+router.delete(
+  "/:id",
+  authorization,
+  checkRole,
+  clearSpecificPaginationRedis,
+  deleteProduct
+);
 
 module.exports = router;
