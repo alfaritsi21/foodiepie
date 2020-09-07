@@ -31,7 +31,7 @@ router.post(
   upload,
   postProduct
 );
-router.post("/search", authorization, searchProductName);
+router.post("/search", authorization, checkRole, searchProductName);
 
 // PATCH/ PUT
 router.patch(
