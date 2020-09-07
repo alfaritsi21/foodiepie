@@ -38,7 +38,6 @@ module.exports = {
   },
   getHistoryById: async (request, response) => {
     try {
-      // const id = request.params.id
       const { id } = request.params;
       const result = await getHistoryById(id);
       if (result.length > 0) {
@@ -64,7 +63,6 @@ module.exports = {
     try {
       const date = request.body.date;
       const result = await getTodayIncome(date);
-      console.log(date);
       return helper.response(response, 200, "Success GET History", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -74,7 +72,6 @@ module.exports = {
     try {
       const date = request.body.date;
       const result = await getYearlyIncome(date);
-      console.log(date);
       return helper.response(response, 200, "Success GET History", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -84,7 +81,6 @@ module.exports = {
     try {
       const today = request.body.date;
       let result = [];
-      // loop
       for (let i = 30; i >= 0; i--) {
         const d = new Date(today);
         d.setDate(d.getDate() - i);
@@ -92,8 +88,6 @@ module.exports = {
         const income = await getTodayIncome(date);
         result = [...result, { date: date, income: income }];
       }
-      // const result = await getTodayIncome(date)
-      // console.log(date)
       return helper.response(response, 200, "Success GET History", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);

@@ -21,7 +21,6 @@ module.exports = {
   },
   getCategoryById: async (request, response) => {
     try {
-      // const id = request.params.id
       const { id } = request.params;
       const result = await getCategoryById(id);
       if (result.length > 0) {
@@ -52,7 +51,6 @@ module.exports = {
         category_status,
       };
       const result = await postCategory(setData);
-      console.log(setData);
       return helper.response(response, 201, "Category Created", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -87,7 +85,6 @@ module.exports = {
     try {
       const { id } = request.params;
       const result = await deleteCategory(id);
-      console.log(result);
       if (result) {
         return helper.response(response, 201, "Category Deleted", id);
       } else {

@@ -63,11 +63,8 @@ module.exports = {
         result,
         pageInfo,
       };
-      // prosesset data result ke dalam redis
       client.set(
-        // `getproductbypagination-${page}-${limit}-${order}-${order_type}`,
         `getproductbypagination:${JSON.stringify(request.query)}`,
-        // JSON.stringify(result),
         JSON.stringify(newData)
       );
       return helper.response(
@@ -107,7 +104,6 @@ module.exports = {
   },
   postProduct: async (request, response) => {
     try {
-      // console.log(request.file);
       const {
         product_name,
         product_price,
@@ -123,7 +119,6 @@ module.exports = {
         product_status,
       };
       const result = await postProduct(setData);
-      // console.log(setData)
       return helper.response(response, 201, "Product Created", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -133,7 +128,6 @@ module.exports = {
     try {
       const { product_name } = request.body;
       const result = await searchProductName(product_name);
-      // console.log(result)
 
       if (result.length > 0) {
         return helper.response(
@@ -157,7 +151,6 @@ module.exports = {
     try {
       const { product_name } = request.body;
       const result = await searchProductName(product_name);
-      // console.log(result)
 
       if (result.length > 0) {
         return helper.response(
@@ -189,7 +182,6 @@ module.exports = {
       } = request.body;
 
       const checkId = await getProductById(id);
-      // console.log(checkId);
 
       if (checkId.length > 0) {
         const setData = {
@@ -206,14 +198,7 @@ module.exports = {
             : checkId[0].product_status,
         };
         const result = await patchProduct(setData, id);
-        const fsUnlink = fs.unlink(
-          `./uploads/${checkId[0].product_image}`,
-          (err) => {
-            if (!err) {
-              console.log("success");
-            }
-          }
-        );
+        const fsUnlink = fs.unlink(`./uploads/${checkId[0].product_image}`);
         client.set(`getproductbyid:${id}`, JSON.stringify(result));
 
         return helper.response(response, 201, "Product Updated", result);
@@ -232,7 +217,6 @@ module.exports = {
     try {
       const { id } = request.params;
       const result = await deleteProduct(id);
-      // console.log(result)
       if (result) {
         return helper.response(response, 201, "Product Deleted", id);
       } else {

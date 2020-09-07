@@ -48,9 +48,6 @@ module.exports = {
     const salt = bcrypt.genSaltSync(10);
     const encryptPassword = bcrypt.hashSync(user_password, salt);
 
-    // console.log(`user Password = ${user_password}`);
-    // console.log(`user Password Bcrypt = ${encryptPassword}`);
-    // kondisi jika email sama tidak bisa
     const setData = {
       user_email,
       user_password: encryptPassword,
@@ -69,16 +66,13 @@ module.exports = {
   loginUser: async (request, response) => {
     try {
       const { user_email, user_password } = request.body;
-      // console.log(user_email);
       const checkDataUser = await checkUser(user_email);
       if (checkDataUser.length >= 1) {
-        //proses 2 = set Password
         const checkPassword = bcrypt.compareSync(
           user_password,
           checkDataUser[0].user_password
         );
         if (checkPassword) {
-          // proses 3 = set JWT
           const {
             user_id,
             user_email,

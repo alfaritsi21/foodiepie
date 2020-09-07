@@ -18,12 +18,9 @@ const {
 } = require("../controller/product");
 const upload = require("../middleware/multer");
 
-// GET
-
 router.get("/", authorization, getProductByPagination, getAllProduct);
 router.get("/:id", authorization, getProductByIdRedis, getProductById);
 
-// POST
 router.post(
   "/",
   authorization,
@@ -33,7 +30,6 @@ router.post(
 );
 router.post("/search", authorization, checkRole, searchProductName);
 
-// PATCH/ PUT
 router.patch(
   "/:id",
   authorization,
@@ -43,7 +39,6 @@ router.patch(
   patchProduct
 );
 
-// DELETE
 router.delete(
   "/:id",
   authorization,

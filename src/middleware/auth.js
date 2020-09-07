@@ -5,7 +5,6 @@ module.exports = {
   authorization: (request, response, next) => {
     let token = request.headers.authorization;
     if (token) {
-      // validasi token jwt
       token = token.split(" ")[1];
       jwt.verify(token, "RAHASIA", (error, result) => {
         console.log(error);
@@ -15,7 +14,6 @@ module.exports = {
         ) {
           return helper.response(response, 403, error.message);
         } else {
-          console.log(result);
           request.token = result;
           next();
         }
@@ -27,7 +25,6 @@ module.exports = {
   checkRole: (request, response, next) => {
     let token = request.headers.authorization;
     if (token) {
-      // validasi token jwt
       token = token.split(" ")[1];
       const payload = jwt.verify(token, "RAHASIA");
       if (payload.user_role !== 1) {

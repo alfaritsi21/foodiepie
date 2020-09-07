@@ -1,4 +1,4 @@
-const connection = require('../config/mysql')
+const connection = require("../config/mysql");
 
 module.exports = {
   getAllCategory: () => {
@@ -6,74 +6,73 @@ module.exports = {
       connection.query(
         `SELECT * FROM category WHERE category_status = 1`,
         (error, result) => {
-          !error ? resolve(result) : reject(new Error(error))
+          !error ? resolve(result) : reject(new Error(error));
         }
-      )
-    })
+      );
+    });
   },
-  getCategoryById: id => {
+  getCategoryById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM category WHERE category_id = ?',
+        "SELECT * FROM category WHERE category_id = ?",
         id,
         (error, result) => {
-          !error ? resolve(result) : reject(new Error(error))
+          !error ? resolve(result) : reject(new Error(error));
         }
-      )
-    })
+      );
+    });
   },
-  postCategory: setData => {
+  postCategory: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'INSERT INTO category SET ?',
+        "INSERT INTO category SET ?",
         setData,
         (error, result) => {
-          console.log(result)
           if (!error) {
             const newResult = {
               category_id: result.insertId,
-              ...setData
-            }
-            resolve(newResult)
+              ...setData,
+            };
+            resolve(newResult);
           } else {
-            reject(new Error(error))
+            reject(new Error(error));
           }
         }
-      )
-    })
+      );
+    });
   },
   patchCategory: (setData, id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'UPDATE category SET ? WHERE category_id = ?',
+        "UPDATE category SET ? WHERE category_id = ?",
         [setData, id],
         (error, result) => {
           if (!error) {
             const newResult = {
               category_id: id,
-              ...setData
-            }
-            resolve(newResult)
+              ...setData,
+            };
+            resolve(newResult);
           } else {
-            reject(new Error(error))
+            reject(new Error(error));
           }
         }
-      )
-    })
+      );
+    });
   },
-  deleteCategory: id => {
+  deleteCategory: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'UPDATE category SET category_status = 0 WHERE category_id = ?',
+        "UPDATE category SET category_status = 0 WHERE category_id = ?",
         id,
         (error, result) => {
           if (!error) {
-            resolve(result.changedRows)
+            resolve(result.changedRows);
           } else {
-            reject(new Error(error))
+            reject(new Error(error));
           }
         }
-      )
-    })
-  }
-}
+      );
+    });
+  },
+};

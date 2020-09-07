@@ -28,6 +28,4 @@ app.get("*", (request, response) => {
   response.status(404).send("Path Not Found !");
 });
 
-app.listen(3001, "127.0.0.1", () => {
-  console.log("Express app is listening on host: 127.0.0.1 and port: 3001 !");
-});
+app.listen(3001, "127.0.0.1");

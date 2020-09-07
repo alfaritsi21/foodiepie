@@ -12,22 +12,13 @@ const {
 } = require("../controller/history");
 const { getHistoryRedis, getHistoryByIdRedis } = require("../middleware/redis");
 
-// history
-// GET
 router.get("/", authorization, getHistoryRedis, getAllHistory);
 router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById);
 router.post("/count/order", authorization, getCountOrder);
 
-// POST
 router.post("/", postHistory);
 router.post("/income/today", authorization, getTodayIncome);
 router.post("/income/month", authorization, getDailyIncomeThisMonth);
 router.post("/income/year", authorization, getYearIncome);
-
-// // PATCH/ PUT
-// router.patch('/:id', patchHistory);
-
-// // DELETE
-// router.delete('/:id', deleteHistory);
 
 module.exports = router;

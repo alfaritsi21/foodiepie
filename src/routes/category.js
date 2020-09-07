@@ -16,12 +16,9 @@ const {
   clearSpecificCategoryRedis,
 } = require("../middleware/redis");
 
-// category
-// GET
 router.get("/", authorization, getCategoryRedis, getAllCategory);
 router.get("/:id", authorization, getCategoryByIdRedis, getCategoryById);
 
-// POST
 router.post(
   "/",
   authorization,
@@ -30,7 +27,6 @@ router.post(
   postCategory
 );
 
-// PATCH/ PUT
 router.patch(
   "/:id",
   authorization,
@@ -39,7 +35,6 @@ router.patch(
   patchCategory
 );
 
-// DELETE
 router.delete(
   "/:id",
   authorization,
