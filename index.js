@@ -28,4 +28,8 @@ app.get("*", (request, response) => {
   response.status(404).send("Path Not Found !");
 });
 
-app.listen(process.env.DB_PORT, process.env.DB_IP);
+app.listen(process.env.DB_PORT, process.env.DB_IP, () => {
+  console.log(
+    `Express app is listening on host: ${process.env.IP} and port: ${process.env.PORT}`
+  );
+});
