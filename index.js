@@ -30,6 +30,6 @@ app.get("*", (request, response) => {
 
 app.listen(process.env.DB_PORT, process.env.DB_IP, () => {
   console.log(
-    `Express app is listening on host: ${process.env.IP} and port: ${process.env.PORT}`
+    `Express app is listening on host: ${process.env.DB_IP} and port: ${process.env.DB_PORT}`
   );
 });
