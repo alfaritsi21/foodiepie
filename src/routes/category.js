@@ -35,12 +35,6 @@ router.patch(
   patchCategory
 );
 
-router.delete(
-  "/:id",
-  authorization,
-  checkRole,
-  clearSpecificCategoryRedis,
-  deleteCategory
-);
+router.delete("/:id", authorization, checkRole, clearDataRedis, deleteCategory);
 
 module.exports = router;

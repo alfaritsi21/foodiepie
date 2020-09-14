@@ -44,13 +44,16 @@ module.exports = {
   },
   postCategory: async (request, response) => {
     try {
-      const { category_name, category_status } = request.body;
+      const { category_name } = request.body;
       const setData = {
         category_name,
         category_created_at: new Date(),
-        category_status,
+        category_status: 1,
       };
       const result = await postCategory(setData);
+      client.flushall((error, result) => {
+        console.log(result);
+      });
       return helper.response(response, 201, "Category Created", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -64,11 +67,14 @@ module.exports = {
       const setData = {
         category_name,
         category_updated_at: new Date(),
-        category_status,
+        category_status: 1,
       };
       const checkId = await getCategoryById(id);
       if (checkId.length > 0) {
         const result = await patchCategory(setData, id);
+        client.flushall((error, result) => {
+          console.log(result);
+        });
         return helper.response(response, 201, "Category Updated", result);
       } else {
         return helper.response(

@@ -10,9 +10,9 @@ const {
   getDailyIncomeThisMonth,
   getYearIncome,
 } = require("../controller/history");
-const { getHistoryRedis, getHistoryByIdRedis } = require("../middleware/redis");
+const { getHistoryByIdRedis, clearDataRedis } = require("../middleware/redis");
 
-router.get("/", authorization, getHistoryRedis, getAllHistory);
+router.get("/", authorization, clearDataRedis, getAllHistory);
 router.get("/:id", authorization, getHistoryByIdRedis, getHistoryById);
 router.post("/count/order", authorization, getCountOrder);
 

@@ -138,20 +138,20 @@ module.exports = {
   },
 
   // HISTORY
-  getHistoryRedis: (request, response, next) => {
-    client.get("gethistory", (error, result) => {
-      if (!error && result != null) {
-        return helper.response(
-          response,
-          200,
-          "Success Get History",
-          JSON.parse(result)
-        );
-      } else {
-        next();
-      }
-    });
-  },
+  // getHistoryRedis: (request, response, next) => {
+  //   client.get("gethistory", (error, result) => {
+  //     if (!error && result != null) {
+  //       return helper.response(
+  //         response,
+  //         200,
+  //         "Success Get History",
+  //         JSON.parse(result)
+  //       );
+  //     } else {
+  //       next();
+  //     }
+  //   });
+  // },
   getHistoryByIdRedis: (request, response, next) => {
     const { id } = request.params;
     client.get(`gethistorybyid:${id}`, (error, result) => {

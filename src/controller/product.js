@@ -193,13 +193,17 @@ module.exports = {
           product_image:
             request.file === undefined ? "" : request.file.filename,
           product_updated_at: new Date(),
-          product_status: product_status
-            ? product_status
-            : checkId[0].product_status,
+          product_status: 1,
         };
         const result = await patchProduct(setData, id);
-        const fsUnlink = fs.unlink(`./uploads/${checkId[0].product_image}`);
+        const fsUnlink = fs.unlink(
+          `./uploads/${checkId[0].product_image}`,
+          () => {}
+        );
         client.set(`getproductbyid:${id}`, JSON.stringify(result));
+        client.flushall((error, result) => {
+          console.log(result);
+        });
 
         return helper.response(response, 201, "Product Updated", result);
       } else {
@@ -220,7 +224,7 @@ module.exports = {
       if (result) {
         return helper.response(response, 201, "Product Deleted", id);
       } else {
-        return helper.response(response, 404, `Category : ${id} Not Found`);
+        return helper.response(response, 404, `Product : ${id} Not Found`);
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);

@@ -30,7 +30,7 @@ module.exports = {
         };
         historyData = [...historyData, history];
       }
-      client.set("gethistory", JSON.stringify(result));
+      // client.set("gethistory", JSON.stringify(result));
       return helper.response(response, 200, "Success GET History", historyData);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
