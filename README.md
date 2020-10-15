@@ -1,6 +1,6 @@
 <h1 align="center">ExpressJS - Foodiepie RESTfull API</h1>
 
-Foodipie is web application for order some menu, there are Restfull API for product, product category, order, and history. [More about Express](https://en.wikipedia.org/wiki/Express.js)
+There are Restfull API for product, product category, order, and history. In this website you can order some available menu. With Foodiepie you can see the order history from history page and you can maintain the transaction on foodiepie. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
@@ -40,62 +40,4 @@ DB_IP=127.0.0.1 // IP
 
 ## End Point
 
-**1. GET**
-
-- `/product/?page=1&limit=6&order=product_id&order_type=ASC`(Get all product, pagination, order, and order type)
-
-  - `{ "page": 1, limit: 6, "order": "product_id", "order_type": "ASC"}`
-
-- `/product/:id` (Get product by id)
-
-- `/category` (Get all category)
-
-- `/category/:id` (Get category by id)
-
-- `/order` (Get all order)
-
-- `/order/:id` (Get order by id)
-
-- `/history` (Get all history)
-
-- `/history/:id` (Get history by id)
-
-- `/users/login` (Login for user)
-  - `{ "user_email": "user@gmail.com", "user_password": "Useruser1!"}`
-
-**2. POST**
-
-- `/product` (Post product)
-
-  - `{ "product_name": "Chocolate", "product_price": 8000, "category_id": 1, product_image: (choose file) , "product_status" : 1 | 0}`
-
-- `/category` (Post category)
-
-  - `{ "category_name": "Main Dish", "category_status": 1 | 0}`
-
-- `/users/register` (Register new user)
-  - `{ "user_email": "user@gmail.com", "user_password": "Useruser1!", "user_name": "user"}`
-
-**3. PATCH**
-
-- `/product/:id` (Update product by id)
-
-  - `{ "product_name": "Chocolate", "product_price": 8000, "category_id": 1, product_image: (choose file) , "product_status" : 1 | 0}`
-
-  - `/category` (Post category)
-  - `{ "category_name": "Main Dish", "category_status": 1 | 0}`
-
-**4. DELETE**
-
-- `/product/:id` (Delete product by id)
-
-- `/category/:id` (Delete category by id)
-
-**5. SEARCH**
-
-- `/product/search` (Search product)
-  - `{ "product_name": "Chocolate"}`
-
-**Documentation API**
-
-https://alfaritsi.postman.co/collections/12330489-89a7475d-ddd5-4de4-be9e-09b81f9a6e36/publish?workspace=037863a3-6030-424d-8021-0aa935aedc5e
+**See Documentation API [Here](https://documenter.getpostman.com/view/12330489/T1LQhRUd)**
